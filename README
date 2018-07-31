@@ -1,0 +1,28 @@
+To compile and run (should work on both Linux and Mac; only tested on an Ubuntu-based system):
+- run build.bat
+- run Ingress_Field_Optimizer with a data file of your choice as follows:
+./Ingress_Field_Optimizer <data_file>
+
+*note: a few example test files have been provided with this program, labeled test*.dat (test_bad.dat demonstrates a small issue that a player could run into; see know issues below for details)
+
+To compile and run on Windows:
+- get a better commandline (MinGW or Cygwin, for example)
+- follow the instructions above in the Linux-like commandline
+
+Purpose:
+	The attached program takes the name of an input file set up like the *.dat examples included via commandline arguement and finds the optimal configuration for ap by maximizing the number of fields.  It is currently unknown whether or not other combinations could be better for ap per portal due to the same number of fields, but one extra link (for example), though optimizing fields per link (and therefore ap per link) seems to be considered the best optimization metric by the fanbase.
+
+How (methodology):
+	The technique used to generate the max number of fields is called a fan field, which starts from one point with all the other points on one side of it (defined more formally in the comments of the function find_boundary_point in lib.c) and follows the other portals in a counter-clockwise direction, making links clockwise back to previous portals (for the test*.dat files, keep in mind the gps coordinates are latitude (y-value), then longitude (x-value), so they may appear to be the reverse of this if you interpret them as standard cartesian coordinates).  An example video of this algorithm in action can be found at https://www.youtube.com/watch?v=C97xCtswH2E as of May 24, 2018 (if it ever goes down, internet time machine websites may be able to provide it); the video was created by Youtube user Michael Hartley, and is therefore assumed to be his work.
+	After finding all the links, this code then finds all the fields formed and prints them out.  It does so through a somewhat inefficient algorithm.
+
+ 
+Known issues:
+	- Segmentation fault if an empty file is given (user error; that's their problem)
+	- Assumes input file is properly formatted
+	- Potentially Rounding errors in general due to floating point.  This has yet to be documented with portals in the wild, however it can be seen in the artificial example test_bad.dat
+
+Future work:
+	- Add functionality to determine mind units captured (this will likely take much more work than what has already been put in)
+
+For any questions, email the developer at: mewzuls@gmail.com
